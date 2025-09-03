@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { postService } from '../services/postService'
-import type { PostHistory as PostHistoryType } from '../../../shared/types'
+import type { PostHistory as PostHistoryType } from '../types'
 import { ArrowLeft, User, FileText } from 'lucide-react'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'

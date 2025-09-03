@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import { Post, PostHistory, PaginatedResponse } from '../../../shared/types'
+import { Post, PostHistory, PaginatedResponse } from '../types'
 
 const API_BASE_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5005/api' || 'https://blog-system-backend.onrender.com/api'
 

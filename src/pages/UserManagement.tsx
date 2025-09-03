@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { userService } from '../services/userService'
-import { User } from '../../../shared/types'
+import { User } from '../types'
 import { Plus, Search, Edit, Trash2, User as UserIcon, Calendar } from 'lucide-react'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'

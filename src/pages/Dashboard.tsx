@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { postService } from '../services/postService'
-import { Post } from '../../../shared/types'
+import { Post } from '../types'
 import { 
   Plus, 
   Search, 
