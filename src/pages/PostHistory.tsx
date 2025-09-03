@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { postService } from '../services/postService'
 import type { PostHistory as PostHistoryType } from '../../../shared/types'
-import { ArrowLeft, Calendar, User, FileText } from 'lucide-react'
+import { ArrowLeft, User, FileText } from 'lucide-react'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -62,7 +62,7 @@ export default function PostHistoryPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -92,7 +92,7 @@ export default function PostHistoryPage() {
         </Card>
       ) : (
         <div className="space-y-4">
-          {history.map((item, index) => (
+          {history.map((item) => (
             <Card key={item._id}>
               <CardHeader>
                 <div className="flex items-center justify-between">

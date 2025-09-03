@@ -29,6 +29,28 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 export default function Dashboard() {
   const { user } = useAuth()
+  console.log(user, 'user')
+  
+  // Helper function to check edit permission
+  const canEditPost = (post: Post) => {
+    const postAuthor = post.author as any;
+    const currentUser = user;
+    
+    const isOwnPost = postAuthor?._id === currentUser?._id;
+    const isAdmin = currentUser?.role === 'admin';
+    const isEmployee = currentUser?.role === 'employee';
+    const postByAdmin = postAuthor?.role === 'admin';
+    
+    // Debug only for first post to avoid spam
+    if (posts.indexOf(post) === 0) {
+      console.log(`[DEBUG] User: ${currentUser?.username} (${currentUser?.role})`);
+      console.log(`[DEBUG] First post: "${post.title}" by ${postAuthor?.username} (${postAuthor?.role})`);
+      console.log(`[DEBUG] isOwnPost: ${isOwnPost}, isAdmin: ${isAdmin}, postByAdmin: ${postByAdmin}`);
+      console.log(`[DEBUG] Can edit first post: ${isOwnPost || isAdmin || (isEmployee && !postByAdmin)}`);
+    }
+    
+    return isOwnPost || isAdmin || (isEmployee && !postByAdmin);
+  }
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -267,12 +289,14 @@ export default function Dashboard() {
                           Xem
                         </Button>
                       </Link>
-                      <Link to={`/edit-post/${post._id}`}>
-                        <Button variant="outline" size="sm" className="flex-1">
-                          <Edit className="h-4 w-4 mr-1" />
-                          Sửa
-                        </Button>
-                      </Link>
+                      {canEditPost(post) && (
+                        <Link to={`/edit-post/${post._id}`}>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Edit className="h-4 w-4 mr-1" />
+                            Sửa
+                          </Button>
+                        </Link>
+                      )}
                       <Button
                         variant="outline"
                         size="sm"
@@ -348,11 +372,16 @@ export default function Dashboard() {
                           <Eye className="h-4 w-4" />
                         </Button>
                       </Link>
-                      <Link to={`/edit-post/${post._id}`}>
-                        <Button variant="outline" size="sm" title="Chỉnh sửa">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </Link>
+                      
+                      {/* Show edit button only if user can edit this post */}
+                      {canEditPost(post) && (
+                        <Link to={`/edit-post/${post._id}`}>
+                          <Button variant="outline" size="sm" title="Chỉnh sửa">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      )}
+                      
                       <Link to={`/post/${post._id}/history`}>
                         <Button variant="outline" size="sm" title="Lịch sử chỉnh sửa">
                           <History className="h-4 w-4" />

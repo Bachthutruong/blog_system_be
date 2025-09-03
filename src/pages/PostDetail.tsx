@@ -100,7 +100,7 @@ export default function PostDetail() {
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
 
-        <style jsx>{`
+        <style>{`
           @media print {
             body { background: #fff !important; }
             header, nav, aside, .no-print, .print-hide { display: none !important; }
@@ -112,7 +112,7 @@ export default function PostDetail() {
   }
 
   return (
-    <div className={`max-w-4xl mx-auto ${isPrintMode ? 'print-mode' : 'space-y-6'}`}>
+    <div className={`w-full ${isPrintMode ? 'print-mode' : 'space-y-6'}`}>
       {/* Print Header - Only visible when printing */}
       {isPrintMode && (
         <div className="print-only mb-8 text-center">
@@ -209,7 +209,7 @@ export default function PostDetail() {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         @media print {
           .print-only {
             display: block !important;

@@ -26,7 +26,7 @@ export default function CreatePost() {
   const [content, setContent] = useState('')
   const [images, setImages] = useState<ImageFile[]>([])
   const [loading, setLoading] = useState(false)
-  const [postId, setPostId] = useState<string | null>(null)
+
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -73,7 +73,7 @@ export default function CreatePost() {
         content: content.trim()
       })
       
-      setPostId(post._id)
+
 
       // Upload images if any
       if (images.length > 0) {
@@ -94,7 +94,7 @@ export default function CreatePost() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+    <div className="w-full space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

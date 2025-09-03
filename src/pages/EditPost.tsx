@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import { postService } from '../services/postService'
 import { Post } from '../../../shared/types'
-import { Upload, X, Image as ImageIcon, FileText, Save, Trash2 } from 'lucide-react'
+import { Upload, X, Image as ImageIcon, FileText, Save } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -31,6 +31,8 @@ export default function EditPost() {
   const [newImages, setNewImages] = useState<ImageFile[]>([])
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
+  const [editingImageId, setEditingImageId] = useState<string | null>(null)
+  const [editingImageName, setEditingImageName] = useState('')
 
   useEffect(() => {
     if (postId) {
@@ -77,6 +79,44 @@ export default function EditPost() {
 
   const removeNewImage = (index: number) => {
     setNewImages(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const removeExistingImage = async (imageId: string) => {
+    if (!postId) return
+    
+    try {
+      await postService.deleteImageFromPost(postId, imageId)
+      // Refresh post data
+      await fetchPost()
+      toast.success('Xóa ảnh thành công!')
+    } catch (error) {
+      toast.error('Không thể xóa ảnh')
+    }
+  }
+
+  const startEditingImageName = (imageId: string, currentName: string) => {
+    setEditingImageId(imageId)
+    setEditingImageName(currentName)
+  }
+
+  const saveImageName = async () => {
+    if (!postId || !editingImageId) return
+    
+    try {
+      await postService.updateImageName(postId, editingImageId, editingImageName)
+      setEditingImageId(null)
+      setEditingImageName('')
+      // Refresh post data
+      await fetchPost()
+      toast.success('Cập nhật tên ảnh thành công!')
+    } catch (error) {
+      toast.error('Không thể cập nhật tên ảnh')
+    }
+  }
+
+  const cancelEditingImageName = () => {
+    setEditingImageId(null)
+    setEditingImageName('')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -128,7 +168,7 @@ export default function EditPost() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">Chỉnh sửa bài viết</h1>
@@ -234,18 +274,70 @@ export default function EditPost() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {post.images.map((image: any, index: number) => (
-                  <div key={index} className="border rounded-lg p-4 bg-muted/50">
+                  <div key={index} className="border rounded-lg p-4 bg-muted/50 relative">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-2 right-2 h-6 w-6 p-0"
+                      onClick={() => removeExistingImage(image._id)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
                     <img
                       src={image.url}
                       alt={image.name}
                       className="w-full h-32 object-cover rounded-lg mb-3"
                     />
-                    <p className="text-sm font-medium mb-2">
-                      Tên: {image.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Kích thước: {image.width} x {image.height}
-                    </p>
+                    
+                    {/* Editable image name */}
+                    <div className="space-y-2">
+                      {editingImageId === image._id ? (
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={editingImageName}
+                            onChange={(e) => setEditingImageName(e.target.value)}
+                            className="text-sm"
+                            placeholder="Tên ảnh..."
+                          />
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={saveImageName}
+                            className="px-2"
+                          >
+                            <Save className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={cancelEditingImageName}
+                            className="px-2"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium">
+                            Tên: {image.name}
+                          </p>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => startEditingImageName(image._id, image.name)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <FileText className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        Kích thước: {image.width} x {image.height}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>

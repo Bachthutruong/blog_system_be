@@ -7,9 +7,6 @@ import {
   Users, 
   LogOut, 
   Menu, 
-  X,
-  FileText,
-  Settings,
   Sparkles
 } from 'lucide-react'
 import { useState } from 'react'
@@ -156,7 +153,7 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Page content */}
         <main className="py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>

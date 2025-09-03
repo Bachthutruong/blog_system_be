@@ -145,7 +145,7 @@ export default function Login() {
             </div>
 
             {/* Demo Accounts */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200/50 dark:border-blue-800/50">
+            {/* <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200/50 dark:border-blue-800/50">
               <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
                 Tài khoản demo:
               </h3>
@@ -153,7 +153,7 @@ export default function Login() {
                 <p><strong>Admin:</strong> admin@example.com / admin123</p>
                 <p><strong>Employee:</strong> employee@example.com / employee123</p>
               </div>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
 
