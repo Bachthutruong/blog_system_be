@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { User, AuthResponse } from '../../../shared/types'
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || '/api'
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5005/api' || 'https://blog-system-backend.onrender.com/api'
 
 // Create axios instance with default config
 const api = axios.create({
