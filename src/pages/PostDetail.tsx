@@ -27,7 +27,7 @@ export default function PostDetail() {
       const postData = await postService.getPostById(postId!)
       setPost(postData)
     } catch (error) {
-      toast.error('Không thể tải thông tin bài viết')
+      toast.error('無法載入文章資訊')
     } finally {
       setLoading(false)
     }
@@ -43,7 +43,7 @@ export default function PostDetail() {
   const copyLink = () => {
     const link = `${window.location.origin}/post/${postId}`
     navigator.clipboard.writeText(link)
-    toast.success('Đã copy link bài viết')
+    toast.success('已複製文章連結')
   }
 
   const printPost = () => {
@@ -61,8 +61,8 @@ export default function PostDetail() {
   if (!post) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-xl font-semibold mb-2">Không tìm thấy bài viết</h2>
-        <p className="text-muted-foreground">Bài viết có thể đã bị xóa hoặc không tồn tại.</p>
+        <h2 className="text-xl font-semibold mb-2">找不到文章</h2>
+        <p className="text-muted-foreground">文章可能已被刪除或不存在。</p>
       </div>
     )
   }
@@ -116,8 +116,8 @@ export default function PostDetail() {
       {/* Print Header - Only visible when printing */}
       {isPrintMode && (
         <div className="print-only mb-8 text-center">
-          <h1 className="text-2xl font-bold mb-2">Blog System</h1>
-          <p className="text-muted-foreground">Bản in bài viết</p>
+          <h1 className="text-2xl font-bold mb-2">部落格系統</h1>
+          <p className="text-muted-foreground">文章列印版本</p>
         </div>
       )}
 
@@ -130,16 +130,16 @@ export default function PostDetail() {
             className="flex items-center"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại
+            返回
           </Button>
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={copyLink}>
               <Copy className="h-4 w-4 mr-2" />
-              Copy link
+              複製連結
             </Button>
             <Button variant="outline" onClick={printPost}>
               <Printer className="h-4 w-4 mr-2" />
-              In bài viết
+              列印文章
             </Button>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function PostDetail() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Badge variant={post.status === 'published' ? 'default' : 'secondary'}>
-                {post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                {post.status === 'published' ? '已發佈' : '草稿'}
               </Badge>
             </div>
             <CardTitle className="text-3xl font-bold leading-tight">
@@ -176,7 +176,7 @@ export default function PostDetail() {
           {/* Images */}
           {post.images.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Hình ảnh bài viết</h3>
+              <h3 className="text-lg font-semibold">文章圖片</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {post.images.map((image: any, index: number) => (
                   <div key={index} className="space-y-2">
@@ -205,7 +205,7 @@ export default function PostDetail() {
       {/* Print Footer - Only visible when printing */}
       {isPrintMode && (
         <div className="print-only mt-8 text-center text-sm text-muted-foreground">
-          <p>In từ Blog System - {format(new Date(), 'dd/MM/yyyy HH:mm')}</p>
+          <p>由 部落格系統 列印 - {format(new Date(), 'dd/MM/yyyy HH:mm')}</p>
         </div>
       )}
 

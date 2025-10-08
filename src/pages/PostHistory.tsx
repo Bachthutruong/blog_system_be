@@ -25,7 +25,7 @@ export default function PostHistoryPage() {
       const historyData = await postService.getPostHistory(postId!)
       setHistory(historyData)
     } catch (error) {
-      toast.error('Không thể tải lịch sử chỉnh sửa')
+      toast.error('無法載入編輯歷史')
     } finally {
       setLoading(false)
     }
@@ -66,15 +66,15 @@ export default function PostHistoryPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Lịch sử chỉnh sửa bài viết</h1>
+          <h1 className="text-2xl font-bold">文章編輯歷史</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Xem lại các thay đổi đã thực hiện trên bài viết
+            檢視此文章的變更紀錄
           </p>
         </div>
         <Link to={`/post/${postId}`}>
           <Button variant="outline" className="flex items-center">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Xem bài viết
+            查看文章
           </Button>
         </Link>
       </div>
@@ -84,9 +84,9 @@ export default function PostHistoryPage() {
         <Card>
           <CardContent className="text-center py-12">
             <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-medium mb-2">Chưa có lịch sử chỉnh sửa</h3>
+            <h3 className="text-lg font-medium mb-2">尚無編輯歷史</h3>
             <p className="text-muted-foreground">
-              Bài viết này chưa có thay đổi nào được ghi lại.
+              此文章尚未有任何變更紀錄。
             </p>
           </CardContent>
         </Card>
@@ -114,7 +114,7 @@ export default function PostHistoryPage() {
                 {/* Title Changes */}
                 {item.title && (
                   <div>
-                    <h4 className="font-medium mb-2">Tiêu đề:</h4>
+                    <h4 className="font-medium mb-2">標題：</h4>
                     <p className="text-lg">{item.title}</p>
                   </div>
                 )}
@@ -122,7 +122,7 @@ export default function PostHistoryPage() {
                 {/* Description Changes */}
                 {item.description && (
                   <div>
-                    <h4 className="font-medium mb-2">Mô tả:</h4>
+                    <h4 className="font-medium mb-2">描述：</h4>
                     <p className="text-muted-foreground">{item.description}</p>
                   </div>
                 )}
@@ -130,7 +130,7 @@ export default function PostHistoryPage() {
                 {/* Content Changes */}
                 {item.content && (
                   <div>
-                    <h4 className="font-medium mb-2">Nội dung:</h4>
+                    <h4 className="font-medium mb-2">內容：</h4>
                     <div 
                       className="prose prose-sm max-w-none text-muted-foreground"
                       dangerouslySetInnerHTML={{ __html: item.content }}
@@ -141,7 +141,7 @@ export default function PostHistoryPage() {
                 {/* Images Changes */}
                 {item.images && item.images.length > 0 && (
                   <div>
-                    <h4 className="font-medium mb-2">Hình ảnh ({item.images.length}):</h4>
+                    <h4 className="font-medium mb-2">圖片（{item.images.length}）：</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                       {item.images.map((image: any, imgIndex: number) => (
                         <div key={imgIndex} className="space-y-1">

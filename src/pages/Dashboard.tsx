@@ -76,30 +76,30 @@ export default function Dashboard() {
       setPosts(response.data)
       setTotalPages(response.totalPages)
     } catch (error) {
-      toast.error('Không thể tải danh sách bài viết')
+      toast.error('無法載入文章清單')
     } finally {
       setLoading(false)
     }
   }
 
   const handleDeletePost = async (postId: string) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+    if (!window.confirm('您確定要刪除此文章嗎？')) {
       return
     }
 
     try {
       await postService.deletePost(postId)
-      toast.success('Xóa bài viết thành công')
+      toast.success('刪除文章成功')
       fetchPosts()
     } catch (error) {
-      toast.error('Không thể xóa bài viết')
+      toast.error('無法刪除文章')
     }
   }
 
   const copyLink = (postId: string) => {
     const link = `${window.location.origin}/post/${postId}`
     navigator.clipboard.writeText(link)
-    toast.success('Đã copy link bài viết')
+    toast.success('已複製文章連結')
   }
 
   const printPost = (postId: string) => {
@@ -128,16 +128,16 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Dashboard
+            儀表板
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Quản lý tất cả bài viết của bạn
+            管理您的所有文章
           </p>
         </div>
         <Link to="/create-post">
           <Button className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-200">
             <Plus className="h-5 w-5 mr-2" />
-            Tạo bài viết mới
+            建立新文章
           </Button>
         </Link>
       </div>
@@ -152,7 +152,7 @@ export default function Dashboard() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Tìm kiếm bài viết..."
+                  placeholder="搜尋文章..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20"
@@ -165,12 +165,12 @@ export default function Dashboard() {
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full sm:w-48 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Lọc theo trạng thái" />
+                  <SelectValue placeholder="依狀態篩選" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tất cả</SelectItem>
-                  <SelectItem value="published">Đã xuất bản</SelectItem>
-                  <SelectItem value="draft">Bản nháp</SelectItem>
+                  <SelectItem value="all">全部</SelectItem>
+                  <SelectItem value="published">已發佈</SelectItem>
+                  <SelectItem value="draft">草稿</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -196,13 +196,13 @@ export default function Dashboard() {
               {/* Page size */}
               <Select value={String(pageSize)} onValueChange={(v) => { setCurrentPage(1); setPageSize(Number(v)) }}>
                 <SelectTrigger className="w-full sm:w-32 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20">
-                  <SelectValue placeholder="Số lượng" />
+                  <SelectValue placeholder="每頁數量" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="6">6 / trang</SelectItem>
-                  <SelectItem value="10">10 / trang</SelectItem>
-                  <SelectItem value="12">12 / trang</SelectItem>
-                  <SelectItem value="20">20 / trang</SelectItem>
+                  <SelectItem value="6">每頁 6 筆</SelectItem>
+                  <SelectItem value="10">每頁 10 筆</SelectItem>
+                  <SelectItem value="12">每頁 12 筆</SelectItem>
+                  <SelectItem value="20">每頁 20 筆</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -214,7 +214,7 @@ export default function Dashboard() {
       <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-0 shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Danh sách bài viết ({posts.length})</span>
+            <span>文章列表（{posts.length}）</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -223,14 +223,14 @@ export default function Dashboard() {
               <div className="mx-auto w-24 h-24 bg-gradient-to-r from-primary/10 to-primary/20 rounded-full flex items-center justify-center mb-4">
                 <FileText className="h-12 w-12 text-primary" />
               </div>
-              <h3 className="text-lg font-medium mb-2">Chưa có bài viết nào</h3>
+              <h3 className="text-lg font-medium mb-2">尚無任何文章</h3>
               <p className="text-muted-foreground mb-4">
-                Bắt đầu tạo bài viết đầu tiên của bạn
+                立即開始建立您的第一篇文章
               </p>
               <Link to="/create-post">
                 <Button className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
                   <Plus className="h-4 w-4 mr-2" />
-                  Tạo bài viết
+                  建立文章
                 </Button>
               </Link>
             </div>
@@ -252,7 +252,7 @@ export default function Dashboard() {
                       />
                       <div className="absolute top-2 right-2">
                         <Badge variant="secondary" className="bg-white/90 dark:bg-slate-800/90">
-                          {post.images.length} ảnh
+                          {post.images.length} 張圖
                         </Badge>
                       </div>
                     </div>
@@ -264,7 +264,7 @@ export default function Dashboard() {
                         {post.title}
                       </h3>
                       <Badge variant={post.status === 'published' ? 'default' : 'secondary'} className="ml-2 flex-shrink-0">
-                        {post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                        {post.status === 'published' ? '已發佈' : '草稿'}
                       </Badge>
                     </div>
                     
@@ -275,6 +275,12 @@ export default function Dashboard() {
                         <User className="h-4 w-4" />
                         {post.author.username}
                       </div>
+                      {post.images.length > 0 && (
+                        <div className="flex items-center gap-1">
+                          <FileText className="h-4 w-4" />
+                          {post.images.length} 張圖
+                        </div>
+                      )}
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
                         {format(new Date(post.createdAt), 'dd/MM/yyyy')}
@@ -286,14 +292,14 @@ export default function Dashboard() {
                       <Link to={`/post/${post._id}`}>
                         <Button variant="outline" size="sm" className="flex-1">
                           <Eye className="h-4 w-4 mr-1" />
-                          Xem
+                          檢視
                         </Button>
                       </Link>
                       {canEditPost(post) && (
                         <Link to={`/edit-post/${post._id}`}>
                           <Button variant="outline" size="sm" className="flex-1">
                             <Edit className="h-4 w-4 mr-1" />
-                            Sửa
+                          編輯
                           </Button>
                         </Link>
                       )}
@@ -304,7 +310,7 @@ export default function Dashboard() {
                         className="flex-1"
                       >
                         <Copy className="h-4 w-4 mr-1" />
-                        Copy
+                        複製
                       </Button>
                       <Button
                         variant="outline"
@@ -313,7 +319,7 @@ export default function Dashboard() {
                         className="flex-1"
                       >
                         <Printer className="h-4 w-4 mr-1" />
-                        In
+                        列印
                       </Button>
                       {user?.role === 'admin' && (
                         <Button
@@ -323,7 +329,7 @@ export default function Dashboard() {
                           className="flex-1"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
-                          Xóa
+                          刪除
                         </Button>
                       )}
                     </div>
@@ -346,7 +352,7 @@ export default function Dashboard() {
                           {post.title}
                         </h3>
                         <Badge variant={post.status === 'published' ? 'default' : 'secondary'}>
-                          {post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                          {post.status === 'published' ? '已發佈' : '草稿'}
                         </Badge>
                       </div>
                       <p className="text-muted-foreground mb-3">{post.description}</p>
@@ -355,20 +361,26 @@ export default function Dashboard() {
                           <User className="h-4 w-4" />
                           {post.author.username}
                         </div>
+                        {post.images.length > 0 && (
+                          <div className="flex items-center gap-1">
+                            <FileText className="h-4 w-4" />
+                            {post.images.length} 張圖
+                          </div>
+                        )}
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
                           {format(new Date(post.createdAt), 'dd/MM/yyyy HH:mm')}
                         </div>
                         {post.images.length > 0 && (
                           <span className="text-primary">
-                            {post.images.length} ảnh
+                            {post.images.length} 張圖
                           </span>
                         )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <Link to={`/post/${post._id}`}>
-                        <Button variant="outline" size="sm" title="Xem bài viết">
+                        <Button variant="outline" size="sm" title="檢視文章">
                           <Eye className="h-4 w-4" />
                         </Button>
                       </Link>
@@ -376,14 +388,14 @@ export default function Dashboard() {
                       {/* Show edit button only if user can edit this post */}
                       {canEditPost(post) && (
                         <Link to={`/edit-post/${post._id}`}>
-                          <Button variant="outline" size="sm" title="Chỉnh sửa">
+                          <Button variant="outline" size="sm" title="編輯">
                             <Edit className="h-4 w-4" />
                           </Button>
                         </Link>
                       )}
                       
                       <Link to={`/post/${post._id}/history`}>
-                        <Button variant="outline" size="sm" title="Lịch sử chỉnh sửa">
+                        <Button variant="outline" size="sm" title="編輯歷史">
                           <History className="h-4 w-4" />
                         </Button>
                       </Link>
@@ -391,7 +403,7 @@ export default function Dashboard() {
                         variant="outline"
                         size="sm"
                         onClick={() => copyLink(post._id)}
-                        title="Copy link"
+                        title="複製連結"
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
@@ -399,7 +411,7 @@ export default function Dashboard() {
                         variant="outline"
                         size="sm"
                         onClick={() => printPost(post._id)}
-                        title="In bài viết"
+                        title="列印文章"
                       >
                         <Printer className="h-4 w-4" />
                       </Button>
@@ -408,7 +420,7 @@ export default function Dashboard() {
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDeletePost(post._id)}
-                          title="Xóa bài viết"
+                          title="刪除文章"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -431,10 +443,10 @@ export default function Dashboard() {
             disabled={currentPage === 1}
             className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm"
           >
-            Trước
+            上一頁
           </Button>
           <span className="text-sm text-muted-foreground bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm px-4 py-2 rounded-lg">
-            Trang {currentPage} / {totalPages}
+            第 {currentPage} / {totalPages} 頁
           </span>
           <Button
             variant="outline"
@@ -442,7 +454,7 @@ export default function Dashboard() {
             disabled={currentPage === totalPages}
             className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm"
           >
-            Sau
+            下一頁
           </Button>
         </div>
       )}

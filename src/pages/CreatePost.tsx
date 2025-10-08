@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
+// import { Badge } from '@/components/ui/badge'
 
 interface ImageFile {
   file: File
@@ -59,8 +59,8 @@ export default function CreatePost() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!title.trim() || !description.trim() || !content.trim()) {
-      toast.error('Vui lòng điền đầy đủ thông tin bài viết')
+    if (!title.trim()) {
+      toast.error('請輸入文章標題')
       return
     }
 
@@ -69,6 +69,7 @@ export default function CreatePost() {
       // Create post first
       const post = await postService.createPost({
         title: title.trim(),
+        // description and content are optional now
         description: description.trim(),
         content: content.trim()
       })
@@ -79,15 +80,18 @@ export default function CreatePost() {
       if (images.length > 0) {
         const imageFiles = images.map(img => img.file)
         const imageNames = images.map(img => img.name)
-        
-        await postService.uploadImages(post._id, imageFiles, imageNames)
-        toast.success('Tải ảnh lên thành công!')
+        try {
+          await postService.uploadImages(post._id, imageFiles, imageNames)
+          toast.success('圖片上傳成功！')
+        } catch (e: any) {
+          toast.error(e.response?.data?.error || e.message || '圖片上傳失敗')
+        }
       }
 
-      toast.success('Tạo bài viết thành công!')
+      toast.success('建立文章成功！')
       navigate('/')
     } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Không thể tạo bài viết')
+      toast.error(error.response?.data?.error || '無法建立文章')
     } finally {
       setLoading(false)
     }
@@ -99,10 +103,10 @@ export default function CreatePost() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Tạo bài viết mới
+            建立新文章
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Viết và chia sẻ nội dung tuyệt vời của bạn
+            撰寫並分享您的精彩內容
           </p>
         </div>
         <Button
@@ -111,7 +115,7 @@ export default function CreatePost() {
           className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Quay lại
+          返回
         </Button>
       </div>
 
@@ -121,19 +125,19 @@ export default function CreatePost() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <FileText className="h-5 w-5 mr-2" />
-              Thông tin bài viết
+              文章資訊
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Title */}
             <div className="space-y-2">
               <Label htmlFor="title" className="text-sm font-medium">
-                Tiêu đề bài viết *
+                文章標題 *
               </Label>
               <Input
                 id="title"
                 type="text"
-                placeholder="Nhập tiêu đề bài viết..."
+                placeholder="請輸入文章標題..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 className="bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -141,46 +145,49 @@ export default function CreatePost() {
               />
             </div>
 
-            {/* Description */}
-            <div className="space-y-2">
-              <Label htmlFor="description" className="text-sm font-medium">
-                Mô tả ngắn *
-              </Label>
-              <Textarea
-                id="description"
-                placeholder="Nhập mô tả ngắn về bài viết..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="min-h-[100px] bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-                required
-              />
-            </div>
-
-            {/* Content */}
-            <div className="space-y-2">
-              <Label htmlFor="content" className="text-sm font-medium">
-                Nội dung bài viết *
-              </Label>
-              <div className="border rounded-lg overflow-hidden bg-white/50 dark:bg-slate-800/50">
-                <ReactQuill
-                  value={content}
-                  onChange={setContent}
-                  placeholder="Viết nội dung bài viết..."
-                  modules={{
-                    toolbar: [
-                      [{ 'header': [1, 2, 3, false] }],
-                      ['bold', 'italic', 'underline', 'strike'],
-                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                      [{ 'color': [] }, { 'background': [] }],
-                      [{ 'align': [] }],
-                      ['link', 'image'],
-                      ['clean']
-                    ]
-                  }}
-                  className="min-h-[200px]"
+            {/* Description hidden as requested */}
+            {false && (
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-sm font-medium">
+                  簡短描述
+                </Label>
+                <Textarea
+                  id="description"
+                  placeholder="請輸入文章的簡短描述..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[100px] bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                 />
               </div>
-            </div>
+            )}
+
+            {/* Content hidden as requested */}
+            {false && (
+              <div className="space-y-2">
+                <Label htmlFor="content" className="text-sm font-medium">
+                  文章內容
+                </Label>
+                <div className="border rounded-lg overflow-hidden bg-white/50 dark:bg-slate-800/50">
+                  <ReactQuill
+                    value={content}
+                    onChange={setContent}
+                    placeholder="撰寫文章內容..."
+                    modules={{
+                      toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        ['link', 'image'],
+                        ['clean']
+                      ]
+                    }}
+                    className="min-h-[200px]"
+                  />
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -189,7 +196,7 @@ export default function CreatePost() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <ImageIcon className="h-5 w-5 mr-2" />
-              Hình ảnh bài viết
+              文章圖片
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -207,10 +214,10 @@ export default function CreatePost() {
                 <Upload className="h-8 w-8 text-primary" />
               </div>
               <p className="text-lg font-medium mb-2">
-                {isDragActive ? 'Thả ảnh vào đây' : 'Kéo thả ảnh vào đây hoặc click để chọn'}
+                {isDragActive ? '將圖片拖放到此處' : '拖放圖片到此或點擊選擇'}
               </p>
               <p className="text-sm text-muted-foreground">
-                Hỗ trợ: JPG, PNG, GIF, WEBP (tối đa 5MB mỗi ảnh)
+                支援：JPG、PNG、GIF、WEBP（每張最多 5MB）
               </p>
             </div>
 
@@ -219,50 +226,37 @@ export default function CreatePost() {
               <div className="mt-6">
                 <h3 className="text-lg font-medium mb-4 flex items-center">
                   <Sparkles className="h-5 w-5 mr-2 text-primary" />
-                  Danh sách ảnh ({images.length})
+                  圖片清單（{images.length}）
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="group bg-white dark:bg-slate-800 rounded-xl border border-gray-200/50 dark:border-slate-700/50 p-4 shadow-sm hover:shadow-lg transition-all duration-300"
-                    >
-                      {/* Image Preview */}
-                      <div className="mb-4 relative">
-                        <img
-                          src={image.preview}
-                          alt={image.name}
-                          className="w-full h-32 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute top-2 right-2">
-                          <Badge variant="secondary" className="bg-white/90 dark:bg-slate-800/90">
-                            Ảnh {index + 1}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      {/* Image Name Input */}
-                      <div className="mb-4 space-y-2">
-                        <Label className="text-sm font-medium">Tên hình ảnh</Label>
+                    <div key={index} className="relative border rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+                      {/* remove */}
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-2 right-2 z-10 inline-flex h-6 w-6 items-center justify-center rounded bg-red-500 text-white shadow hover:bg-red-600"
+                        aria-label="remove"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+
+                      {/* Row 1: title (full border-bottom) */}
+                      <div className="p-3 border-b">
+                        <Label className="text-xs text-muted-foreground block mb-1">圖片名稱</Label>
                         <Input
                           type="text"
                           value={image.name}
                           onChange={(e) => handleImageNameChange(index, e.target.value)}
-                          placeholder="Nhập tên hình ảnh"
-                          className="bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20"
+                          placeholder="請輸入圖片名稱"
+                          className="bg-transparent"
                         />
                       </div>
 
-                      {/* Remove Button */}
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={() => removeImage(index)}
-                        className="w-full hover:bg-red-600 transition-colors"
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Xóa ảnh
-                      </Button>
+                      {/* Row 2: image */}
+                      <div className="p-3">
+                        <img src={image.preview} alt={image.name} className="w-full h-40 object-cover rounded" />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -281,12 +275,12 @@ export default function CreatePost() {
             {loading ? (
               <div className="flex items-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Đang tạo bài viết...
+                正在建立文章...
               </div>
             ) : (
               <div className="flex items-center">
                 <Save className="h-5 w-5 mr-2" />
-                Tạo bài viết
+                建立文章
               </div>
             )}
           </Button>

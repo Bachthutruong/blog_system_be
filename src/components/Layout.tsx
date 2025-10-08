@@ -30,9 +30,9 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: Home },
-    { name: 'Tạo bài viết', href: '/create-post', icon: Plus },
-    ...(user?.role === 'admin' ? [{ name: 'Quản lý người dùng', href: '/users', icon: Users }] : []),
+    { name: '儀表板', href: '/', icon: Home },
+    { name: '建立文章', href: '/create-post', icon: Plus },
+    ...(user?.role === 'admin' ? [{ name: '使用者管理', href: '/users', icon: Users }] : []),
   ]
 
   const isActive = (href: string) => location.pathname === href
@@ -65,7 +65,7 @@ export default function Layout({ children }: LayoutProps) {
           <SheetHeader className="p-6 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary to-primary/80">
             <SheetTitle className="flex items-center text-white">
               <Sparkles className="h-6 w-6 mr-2" />
-              Blog System
+              部落格系統
             </SheetTitle>
           </SheetHeader>
           <nav className="flex-1 space-y-2 px-4 py-6">
@@ -91,7 +91,7 @@ export default function Layout({ children }: LayoutProps) {
               className="w-full justify-start hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors"
             >
               <LogOut className="mr-3 h-5 w-5" />
-              Đăng xuất
+              登出
             </Button>
           </div>
         </SheetContent>
@@ -103,7 +103,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex items-center h-20 px-6 border-b border-gray-200/50 dark:border-slate-700/50 bg-gradient-to-r from-primary to-primary/80">
             <h1 className="text-xl font-bold text-white flex items-center">
               <Sparkles className="h-6 w-6 mr-2" />
-              Blog System
+              部落格系統
             </h1>
           </div>
           <nav className="flex-1 space-y-2 px-4 py-6">
@@ -129,7 +129,7 @@ export default function Layout({ children }: LayoutProps) {
               className="w-full justify-start hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 transition-colors"
             >
               <LogOut className="mr-3 h-5 w-5" />
-              Đăng xuất
+              登出
             </Button>
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function Layout({ children }: LayoutProps) {
             </SheetTrigger>
           </Sheet>
           <h1 className="text-lg font-semibold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Blog System
+            部落格系統
           </h1>
         </div>
 

@@ -49,7 +49,7 @@ export default function EditPost() {
       setContent(postData.content)
       setStatus(postData.status)
     } catch (error) {
-      toast.error('Không thể tải thông tin bài viết')
+      toast.error('無法載入文章資訊')
       navigate('/')
     } finally {
       setInitialLoading(false)
@@ -88,16 +88,16 @@ export default function EditPost() {
       await postService.deleteImageFromPost(postId, imageId)
       // Refresh post data
       await fetchPost()
-      toast.success('Xóa ảnh thành công!')
+      toast.success('刪除圖片成功！')
     } catch (error) {
-      toast.error('Không thể xóa ảnh')
+      toast.error('無法刪除圖片')
     }
   }
 
-  const startEditingImageName = (imageId: string, currentName: string) => {
-    setEditingImageId(imageId)
-    setEditingImageName(currentName)
-  }
+  // const startEditingImageName = (imageId: string, currentName: string) => {
+  //   setEditingImageId(imageId)
+  //   setEditingImageName(currentName)
+  // }
 
   const saveImageName = async () => {
     if (!postId || !editingImageId) return
@@ -108,22 +108,22 @@ export default function EditPost() {
       setEditingImageName('')
       // Refresh post data
       await fetchPost()
-      toast.success('Cập nhật tên ảnh thành công!')
+      toast.success('更新圖片名稱成功！')
     } catch (error) {
-      toast.error('Không thể cập nhật tên ảnh')
+      toast.error('無法更新圖片名稱')
     }
   }
 
-  const cancelEditingImageName = () => {
-    setEditingImageId(null)
-    setEditingImageName('')
-  }
+  // const cancelEditingImageName = () => {
+  //   setEditingImageId(null)
+  //   setEditingImageName('')
+  // }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!title.trim() || !description.trim() || !content.trim()) {
-      toast.error('Vui lòng điền đầy đủ thông tin bài viết')
+    if (!title.trim()) {
+      toast.error('請輸入文章標題')
       return
     }
 
@@ -143,13 +143,13 @@ export default function EditPost() {
         const imageNames = newImages.map(img => img.name)
         
         await postService.uploadImages(postId!, imageFiles, imageNames)
-        toast.success('Tải ảnh lên thành công!')
+        toast.success('圖片上傳成功！')
       }
 
-      toast.success('Cập nhật bài viết thành công!')
+      toast.success('更新文章成功！')
       navigate('/')
     } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Không thể cập nhật bài viết')
+      toast.error(error.response?.data?.error || '無法更新文章')
     } finally {
       setLoading(false)
     }
@@ -164,16 +164,16 @@ export default function EditPost() {
   }
 
   if (!post) {
-    return <div>Không tìm thấy bài viết</div>
+    return <div>找不到文章</div>
   }
 
   return (
     <div className="w-full space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold">Chỉnh sửa bài viết</h1>
+        <h1 className="text-2xl font-bold">編輯文章</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Chỉnh sửa nội dung và hình ảnh bài viết
+          編輯文章內容與圖片
         </p>
       </div>
 
@@ -183,80 +183,83 @@ export default function EditPost() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <FileText className="h-5 w-5 mr-2" />
-              Thông tin cơ bản
+              基本資訊
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">
-                Tiêu đề bài viết *
+                文章標題 *
               </Label>
               <Input
                 id="title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Nhập tiêu đề bài viết"
+                placeholder="請輸入文章標題"
                 maxLength={200}
                 required
               />
               <p className="text-sm text-muted-foreground">
-                {title.length}/200 ký tự
+                {title.length}/200 字元
               </p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">
-                Mô tả ngắn *
-              </Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                placeholder="Nhập mô tả ngắn gọn về bài viết"
-                maxLength={500}
-                required
-              />
-              <p className="text-sm text-muted-foreground">
-                {description.length}/500 ký tự
-              </p>
-            </div>
+            {false && (
+              <div className="space-y-2">
+                <Label htmlFor="description">
+                  簡短描述
+                </Label>
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                  placeholder="請輸入文章的簡短描述"
+                  maxLength={500}
+                />
+                <p className="text-sm text-muted-foreground">
+                  {description.length}/500 字元
+                </p>
+              </div>
+            )}
 
-            <div className="space-y-2">
-              <Label htmlFor="content">
-                Nội dung bài viết *
-              </Label>
-              <ReactQuill
-                value={content}
-                onChange={setContent}
-                placeholder="Viết nội dung bài viết..."
-                modules={{
-                  toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
-                    ['link', 'image'],
-                    ['clean']
-                  ]
-                }}
-                className="min-h-[200px]"
-              />
-            </div>
+            {false && (
+              <div className="space-y-2">
+                <Label htmlFor="content">
+                  文章內容
+                </Label>
+                <ReactQuill
+                  value={content}
+                  onChange={setContent}
+                  placeholder="撰寫文章內容..."
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                      [{ 'color': [] }, { 'background': [] }],
+                      [{ 'align': [] }],
+                      ['link', 'image'],
+                      ['clean']
+                    ]
+                  }}
+                  className="min-h-[200px]"
+                />
+              </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="status">
-                Trạng thái
+                狀態
               </Label>
               <Select value={status} onValueChange={(value: 'draft' | 'published') => setStatus(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Chọn trạng thái" />
+                  <SelectValue placeholder="選擇狀態" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="draft">Bản nháp</SelectItem>
-                  <SelectItem value="published">Xuất bản</SelectItem>
+                  <SelectItem value="draft">草稿</SelectItem>
+                  <SelectItem value="published">發佈</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -268,75 +271,41 @@ export default function EditPost() {
           <Card>
             <CardHeader>
               <CardTitle>
-                Hình ảnh hiện tại ({post.images.length})
+                目前的圖片（{post.images.length}）
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {post.images.map((image: any, index: number) => (
-                  <div key={index} className="border rounded-lg p-4 bg-muted/50 relative">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="absolute top-2 right-2 h-6 w-6 p-0"
-                      onClick={() => removeExistingImage(image._id)}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                    <img
-                      src={image.url}
-                      alt={image.name}
-                      className="w-full h-32 object-cover rounded-lg mb-3"
-                    />
-                    
-                    {/* Editable image name */}
-                    <div className="space-y-2">
-                      {editingImageId === image._id ? (
+                  <div key={index} className="border rounded-lg overflow-hidden">
+                    {/* Row 1: Title and actions */}
+                    <div className="p-3 border-b">
+                      <div className="flex items-center gap-2">
+                        <Input
+                          value={image.name}
+                          onChange={(e) => {
+                            setEditingImageId(image._id);
+                            setEditingImageName(e.target.value);
+                            setPost(prev => prev ? { ...prev, images: (prev.images as any).map((img: any) => img._id === image._id ? { ...img, name: e.target.value } : img) } : prev);
+                          }}
+                          className="text-sm flex-1"
+                          placeholder="圖片名稱..."
+                        />
                         <div className="flex items-center gap-2">
-                          <Input
-                            value={editingImageName}
-                            onChange={(e) => setEditingImageName(e.target.value)}
-                            className="text-sm"
-                            placeholder="Tên ảnh..."
-                          />
-                          <Button
-                            type="button"
-                            size="sm"
-                            onClick={saveImageName}
-                            className="px-2"
-                          >
+                          <Button type="button" size="sm" onClick={saveImageName} className="px-2" disabled={editingImageId !== image._id} title="儲存名稱">
                             <Save className="h-3 w-3" />
                           </Button>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={cancelEditingImageName}
-                            className="px-2"
-                          >
+                          <Button type="button" size="sm" variant="destructive" onClick={() => removeExistingImage(image._id)} title="刪除圖片" className="px-2">
                             <X className="h-3 w-3" />
                           </Button>
                         </div>
-                      ) : (
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium">
-                            Tên: {image.name}
-                          </p>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => startEditingImageName(image._id, image.name)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <FileText className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      )}
-                      <p className="text-xs text-muted-foreground">
-                        Kích thước: {image.width} x {image.height}
-                      </p>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">尺寸：{image.width} x {image.height}</p>
+                    </div>
+
+                    {/* Row 2: Image */}
+                    <div className="p-3">
+                      <img src={image.url} alt={image.name} className="w-full h-32 object-cover rounded" />
                     </div>
                   </div>
                 ))}
@@ -350,7 +319,7 @@ export default function EditPost() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <ImageIcon className="h-5 w-5 mr-2" />
-              Thêm hình ảnh mới
+              新增圖片
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -366,10 +335,10 @@ export default function EditPost() {
               <input {...getInputProps()} />
               <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <p className="text-lg font-medium mb-2">
-                {isDragActive ? 'Thả ảnh vào đây' : 'Kéo thả ảnh vào đây hoặc click để chọn'}
+                {isDragActive ? '將圖片拖放到此處' : '拖放圖片到此或點擊選擇'}
               </p>
               <p className="text-sm text-muted-foreground">
-                Hỗ trợ: JPG, PNG, GIF, WEBP (tối đa 5MB mỗi ảnh)
+                支援：JPG、PNG、GIF、WEBP（每張最多 5MB）
               </p>
             </div>
 
@@ -377,7 +346,7 @@ export default function EditPost() {
             {newImages.length > 0 && (
               <div className="mt-6">
                 <h3 className="text-md font-medium mb-4">
-                  Ảnh mới sẽ thêm ({newImages.length})
+                  將新增的圖片（{newImages.length}）
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {newImages.map((image, index) => (
@@ -385,21 +354,21 @@ export default function EditPost() {
                       key={index}
                       className="border rounded-lg p-4 bg-muted/50"
                     >
+                      <div className="mb-3 space-y-2">
+                        <Label>圖片名稱</Label>
+                        <Input
+                          type="text"
+                          value={image.name}
+                          onChange={(e) => handleImageNameChange(index, e.target.value)}
+                          placeholder="請輸入圖片名稱"
+                        />
+                      </div>
+
                       <div className="mb-3">
                         <img
                           src={image.preview}
                           alt={image.name}
                           className="w-full h-32 object-cover rounded-lg"
-                        />
-                      </div>
-                      
-                      <div className="mb-3 space-y-2">
-                        <Label>Tên hình ảnh</Label>
-                        <Input
-                          type="text"
-                          value={image.name}
-                          onChange={(e) => handleImageNameChange(index, e.target.value)}
-                          placeholder="Nhập tên hình ảnh"
                         />
                       </div>
 
@@ -410,7 +379,7 @@ export default function EditPost() {
                         className="w-full"
                       >
                         <X className="h-4 w-4 mr-2" />
-                        Xóa ảnh
+                        刪除圖片
                       </Button>
                     </div>
                   ))}
@@ -422,12 +391,12 @@ export default function EditPost() {
 
         {/* Submit Button */}
         <div className="flex justify-end space-x-4">
-          <Button
+            <Button
             type="button"
             variant="outline"
             onClick={() => navigate('/')}
           >
-            Hủy
+            取消
           </Button>
           <Button
             type="submit"
@@ -438,7 +407,7 @@ export default function EditPost() {
             ) : (
               <Save className="h-4 w-4 mr-2" />
             )}
-            Cập nhật bài viết
+            更新文章
           </Button>
         </div>
       </form>

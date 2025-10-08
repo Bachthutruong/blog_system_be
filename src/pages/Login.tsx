@@ -19,16 +19,16 @@ export default function Login() {
     e.preventDefault()
     
     if (!email.trim() || !password.trim()) {
-      toast.error('Vui lòng điền đầy đủ thông tin')
+      toast.error('請填寫完整資訊')
       return
     }
 
     setLoading(true)
     try {
       await login(email.trim(), password)
-      toast.success('Đăng nhập thành công!')
+      toast.success('登入成功！')
     } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Đăng nhập thất bại')
+      toast.error(error.response?.data?.error || '登入失敗')
     } finally {
       setLoading(false)
     }
@@ -43,10 +43,10 @@ export default function Login() {
             <Sparkles className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">
-            Blog System
+            部落格系統
           </h1>
           <p className="text-muted-foreground">
-            Đăng nhập để tiếp tục
+            登入以繼續
           </p>
         </div>
 
@@ -54,10 +54,10 @@ export default function Login() {
         <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-0 shadow-2xl">
           <CardHeader className="space-y-1 pb-6">
             <CardTitle className="text-2xl font-bold text-center">
-              Đăng nhập
+              登入
             </CardTitle>
             <p className="text-center text-muted-foreground">
-              Nhập thông tin tài khoản của bạn
+              請輸入您的帳號資訊
             </p>
           </CardHeader>
           <CardContent>
@@ -72,7 +72,7 @@ export default function Login() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Nhập email của bạn"
+                    placeholder="請輸入您的電子郵件"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -84,14 +84,14 @@ export default function Login() {
               {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">
-                  Mật khẩu
+                  密碼
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Nhập mật khẩu"
+                    placeholder="請輸入密碼"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -120,11 +120,11 @@ export default function Login() {
                 {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Đang đăng nhập...
+                    登入中...
                   </div>
                 ) : (
                   <div className="flex items-center">
-                    Đăng nhập
+                    登入
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 )}
@@ -134,12 +134,12 @@ export default function Login() {
             {/* Register Link */}
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Chưa có tài khoản?{' '}
+                還沒有帳號嗎？{' '}
                 <Link
                   to="/register"
                   className="font-medium text-primary hover:text-primary/80 transition-colors"
                 >
-                  Đăng ký ngay
+                  立即註冊
                 </Link>
               </p>
             </div>
@@ -160,7 +160,7 @@ export default function Login() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-xs text-muted-foreground">
-            © 2024 Blog System. Được xây dựng với ❤️
+            © 2024 部落格系統．以 ❤️ 打造
           </p>
         </div>
       </div>

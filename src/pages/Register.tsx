@@ -22,26 +22,26 @@ export default function Register() {
     e.preventDefault()
     
     if (!username.trim() || !email.trim() || !password || !confirmPassword) {
-      toast.error('Vui lòng điền đầy đủ thông tin')
+      toast.error('請填寫完整資訊')
       return
     }
 
     if (password !== confirmPassword) {
-      toast.error('Mật khẩu xác nhận không khớp')
+      toast.error('確認密碼不一致')
       return
     }
 
     if (password.length < 6) {
-      toast.error('Mật khẩu phải có ít nhất 6 ký tự')
+      toast.error('密碼至少需 6 個字元')
       return
     }
 
     setLoading(true)
     try {
       await register(username.trim(), email.trim(), password)
-      toast.success('Đăng ký thành công!')
+      toast.success('註冊成功！')
     } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Đăng ký thất bại')
+      toast.error(error.response?.data?.error || '註冊失敗')
     } finally {
       setLoading(false)
     }
@@ -59,10 +59,10 @@ export default function Register() {
             <Sparkles className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">
-            Blog System
+            部落格系統
           </h1>
           <p className="text-muted-foreground">
-            Tạo tài khoản mới
+            建立新帳號
           </p>
         </div>
 
@@ -70,10 +70,10 @@ export default function Register() {
         <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-0 shadow-2xl">
           <CardHeader className="space-y-1 pb-6">
             <CardTitle className="text-2xl font-bold text-center">
-              Đăng ký
+              註冊
             </CardTitle>
             <p className="text-center text-muted-foreground">
-              Tạo tài khoản để bắt đầu
+              建立帳號即可開始使用
             </p>
           </CardHeader>
           <CardContent>
@@ -81,14 +81,14 @@ export default function Register() {
               {/* Username Field */}
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-sm font-medium">
-                  Tên người dùng
+                  使用者名稱
                 </Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="username"
                     type="text"
-                    placeholder="Nhập tên người dùng"
+                    placeholder="請輸入使用者名稱"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="pl-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -107,7 +107,7 @@ export default function Register() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Nhập email của bạn"
+                    placeholder="請輸入您的電子郵件"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -119,14 +119,14 @@ export default function Register() {
               {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">
-                  Mật khẩu
+                  密碼
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Nhập mật khẩu"
+                    placeholder="請輸入密碼"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10 pr-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -148,7 +148,7 @@ export default function Register() {
                   <div className="flex items-center gap-2 text-xs">
                     <CheckCircle className={`h-3 w-3 ${isPasswordValid ? 'text-green-500' : 'text-gray-400'}`} />
                     <span className={isPasswordValid ? 'text-green-600' : 'text-gray-500'}>
-                      Mật khẩu phải có ít nhất 6 ký tự
+                      密碼至少需 6 個字元
                     </span>
                   </div>
                 )}
@@ -157,14 +157,14 @@ export default function Register() {
               {/* Confirm Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                  Xác nhận mật khẩu
+                  確認密碼
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Nhập lại mật khẩu"
+                    placeholder="請再次輸入密碼"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="pl-10 pr-10 bg-white/50 dark:bg-slate-800/50 border-0 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
@@ -186,7 +186,7 @@ export default function Register() {
                   <div className="flex items-center gap-2 text-xs">
                     <CheckCircle className={`h-3 w-3 ${isConfirmPasswordValid ? 'text-green-500' : 'text-gray-400'}`} />
                     <span className={isConfirmPasswordValid ? 'text-green-600' : 'text-gray-500'}>
-                      Mật khẩu xác nhận khớp
+                      確認密碼一致
                     </span>
                   </div>
                 )}
@@ -201,11 +201,11 @@ export default function Register() {
                 {loading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Đang đăng ký...
+                    註冊中...
                   </div>
                 ) : (
                   <div className="flex items-center">
-                    Đăng ký
+                    註冊
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 )}
@@ -215,12 +215,12 @@ export default function Register() {
             {/* Login Link */}
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Đã có tài khoản?{' '}
+                已經有帳號了嗎？{' '}
                 <Link
                   to="/login"
                   className="font-medium text-primary hover:text-primary/80 transition-colors"
                 >
-                  Đăng nhập ngay
+                  立即登入
                 </Link>
               </p>
             </div>
@@ -241,7 +241,7 @@ export default function Register() {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-xs text-muted-foreground">
-            © 2024 Blog System. Được xây dựng với ❤️
+            © 2024 部落格系統．以 ❤️ 打造
           </p>
         </div>
       </div>

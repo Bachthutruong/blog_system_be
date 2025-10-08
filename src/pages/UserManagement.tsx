@@ -55,7 +55,7 @@ export default function UserManagement() {
       const response = await userService.getAllUsers()
       setUsers(response)
     } catch (error) {
-      toast.error('Không thể tải danh sách người dùng')
+      toast.error('無法載入使用者列表')
     } finally {
       setLoading(false)
     }
@@ -75,7 +75,7 @@ export default function UserManagement() {
   const handleCreate = async () => {
     try {
       if (!form.username || !form.email || !form.password) {
-        toast.error('Vui lòng nhập đủ thông tin')
+        toast.error('請填寫完整資訊')
         return
       }
       const created = await userService.createUser({
@@ -84,11 +84,11 @@ export default function UserManagement() {
         password: form.password!,
         role: form.role,
       })
-      toast.success('Tạo người dùng thành công')
+      toast.success('建立使用者成功')
       setIsAddOpen(false)
       setUsers([created, ...users])
     } catch (e) {
-      toast.error('Không thể tạo người dùng')
+      toast.error('無法建立使用者')
     }
   }
 
@@ -100,25 +100,25 @@ export default function UserManagement() {
         email: form.email,
         role: form.role,
       } as any)
-      toast.success('Cập nhật người dùng thành công')
+      toast.success('更新使用者成功')
       setIsEditOpen(false)
       setUsers(users.map(u => (u._id === updated._id ? updated : u)))
     } catch (e) {
-      toast.error('Không thể cập nhật người dùng')
+      toast.error('無法更新使用者')
     }
   }
 
   const handleDeleteUser = async (userId: string, username: string) => {
-    if (!window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${username}"?`)) {
+    if (!window.confirm(`您確定要刪除使用者「${username}」嗎？`)) {
       return
     }
 
     try {
       await userService.deleteUser(userId)
-      toast.success('Xóa người dùng thành công')
+      toast.success('刪除使用者成功')
       fetchUsers()
     } catch (error) {
-      toast.error('Không thể xóa người dùng')
+      toast.error('無法刪除使用者')
     }
   }
 
@@ -135,13 +135,13 @@ export default function UserManagement() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
+          <h1 className="text-2xl font-bold">使用者管理</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Quản lý tất cả người dùng trong hệ thống
+            管理系統中的所有使用者
           </p>
         </div>
         <Button onClick={openAddDialog} className="mt-4 sm:mt-0">
-          <Plus className="h-4 w-4 mr-2" /> Thêm người dùng
+          <Plus className="h-4 w-4 mr-2" /> 新增使用者
         </Button>
       </div>
 
@@ -152,7 +152,7 @@ export default function UserManagement() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Tìm kiếm người dùng..."
+              placeholder="搜尋使用者..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -164,26 +164,26 @@ export default function UserManagement() {
       {/* Users Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách người dùng ({filteredUsers.length})</CardTitle>
+          <CardTitle>使用者列表（{filteredUsers.length}）</CardTitle>
         </CardHeader>
         <CardContent>
           {filteredUsers.length === 0 ? (
             <div className="text-center py-12">
               <UserIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">Không có người dùng nào</h3>
+              <h3 className="text-lg font-medium mb-2">沒有任何使用者</h3>
               <p className="text-muted-foreground">
-                {searchTerm ? 'Thử thay đổi từ khóa tìm kiếm' : 'Chưa có người dùng nào trong hệ thống'}
+                {searchTerm ? '請嘗試更換搜尋關鍵字' : '系統中尚無使用者'}
               </p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Người dùng</TableHead>
+                  <TableHead>使用者</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Vai trò</TableHead>
-                  <TableHead>Ngày tạo</TableHead>
-                  <TableHead className="text-right">Thao tác</TableHead>
+                  <TableHead>角色</TableHead>
+                  <TableHead>建立日期</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -204,7 +204,7 @@ export default function UserManagement() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                        {user.role === 'admin' ? 'Quản trị viên' : 'Nhân viên'}
+                        {user.role === 'admin' ? '管理員' : '員工'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -239,12 +239,12 @@ export default function UserManagement() {
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Thêm người dùng</DialogTitle>
-            <DialogDescription>Nhập thông tin người dùng mới</DialogDescription>
+            <DialogTitle>新增使用者</DialogTitle>
+            <DialogDescription>輸入新使用者資訊</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <Input
-              placeholder="Tên người dùng"
+              placeholder="使用者名稱"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
             />
@@ -256,23 +256,23 @@ export default function UserManagement() {
             />
             <Input
               type="password"
-              placeholder="Mật khẩu"
+              placeholder="密碼"
               value={form.password || ''}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
             <Select value={form.role} onValueChange={(v: 'admin' | 'employee') => setForm({ ...form, role: v })}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn vai trò" />
+                <SelectValue placeholder="選擇角色" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="employee">Nhân viên</SelectItem>
-                <SelectItem value="admin">Quản trị viên</SelectItem>
+                <SelectItem value="employee">員工</SelectItem>
+                <SelectItem value="admin">管理員</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => setIsAddOpen(false)}>Hủy</Button>
-            <Button onClick={handleCreate}>Tạo</Button>
+            <Button variant="outline" onClick={() => setIsAddOpen(false)}>取消</Button>
+            <Button onClick={handleCreate}>建立</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -281,12 +281,12 @@ export default function UserManagement() {
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa người dùng</DialogTitle>
-            <DialogDescription>Cập nhật thông tin người dùng</DialogDescription>
+            <DialogTitle>編輯使用者</DialogTitle>
+            <DialogDescription>更新使用者資訊</DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <Input
-              placeholder="Tên người dùng"
+              placeholder="使用者名稱"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
             />
@@ -298,17 +298,17 @@ export default function UserManagement() {
             />
             <Select value={form.role} onValueChange={(v: 'admin' | 'employee') => setForm({ ...form, role: v })}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn vai trò" />
+                <SelectValue placeholder="選擇角色" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="employee">Nhân viên</SelectItem>
-                <SelectItem value="admin">Quản trị viên</SelectItem>
+                <SelectItem value="employee">員工</SelectItem>
+                <SelectItem value="admin">管理員</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => setIsEditOpen(false)}>Hủy</Button>
-            <Button onClick={handleUpdate}>Lưu</Button>
+            <Button variant="outline" onClick={() => setIsEditOpen(false)}>取消</Button>
+            <Button onClick={handleUpdate}>儲存</Button>
           </div>
         </DialogContent>
       </Dialog>
